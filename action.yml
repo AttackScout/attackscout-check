@@ -1,0 +1,47 @@
+name: 'AttackScout Check'
+description: 'Audit the public Internet exposure of a domain (grade, DMARC, certificate, deadlines). Fails the job below a threshold.'
+author: 'AttackScout'
+branding:
+  icon: 'shield'
+  color: 'blue'
+inputs:
+  domain:
+    description: 'Domain to audit, for example example.com.'
+    required: true
+  api-key:
+    description: 'AttackScout API key (as_live_...), from a secret. Scope scans:write is required.'
+    required: true
+  min-grade:
+    description: 'Lowest accepted grade (A best, F worst). The job fails below it. Empty: no grade threshold.'
+    required: false
+    default: 'C'
+  fail-on-severity:
+    description: 'Fail if a failed check has this severity or worse: low, medium, high, critical, blocking, or none.'
+    required: false
+    default: 'none'
+  fail-on-partial:
+    description: 'Fail when the grade is partial (fewer than 70 percent of checks verified).'
+    required: false
+    default: 'false'
+  api-url:
+    description: 'API base URL.'
+    required: false
+    default: 'https://attackscout.com'
+  timeout-seconds:
+    description: 'Request timeout in seconds.'
+    required: false
+    default: '90'
+outputs:
+  grade:
+    description: 'Grade from A to F, empty if partial.'
+  failed-count:
+    description: 'Number of failed checks.'
+  worst-severity:
+    description: 'Worst severity among failed checks, empty if none.'
+  scan-id:
+    description: 'Audit identifier.'
+  passed:
+    description: 'true if the thresholds are met.'
+runs:
+  using: 'node20'
+  main: 'src/main.js'

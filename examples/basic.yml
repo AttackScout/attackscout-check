@@ -1,0 +1,23 @@
+# Audit after each deploy and every Monday; fail below grade C or on a critical finding.
+name: AttackScout
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  attackscout:
+    runs-on: ubuntu-latest
+    steps:
+      - id: audit
+        uses: AttackScout/attackscout-check@v1
+        with:
+          domain: example.com
+          api-key: ${{ secrets.ATTACKSCOUT_API_KEY }}
+          min-grade: C
+          fail-on-severity: critical
+      - run: echo "Grade ${{ steps.audit.outputs.grade }}"
+        if: always()

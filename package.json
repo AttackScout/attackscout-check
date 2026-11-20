@@ -1,0 +1,13 @@
+{
+  "name": "attackscout-github-action",
+  "version": "0.1.0",
+  "private": true,
+  "description": "GitHub Action: audit the public SSL, DNS and email exposure of a domain.",
+  "license": "MIT",
+  "type": "commonjs",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "lint": "node scripts/lint.js",
+    "test": "node --test test/*.test.js"
+  }
+}
